@@ -1,0 +1,40 @@
+require 'rake'
+require 'rake/testtask'
+
+# Define the default task
+task :default => :test
+
+# Define a task for running tests
+Rake::TestTask.new do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+end
+
+# Define a task for database setup
+namespace :db do
+  desc 'Create the database'
+  task :create do
+    sh 'bundle exec rake db:create'
+  end
+
+  desc 'Migrate the database'
+  task :migrate do
+    sh 'bundle exec rake db:migrate'
+  end
+
+  desc 'Seed the database'
+  task :seed do
+    sh 'bundle exec rake db:seed'
+  end
+end
+
+# Define a task for running the server
+desc 'Start the Rails server'
+task :server do
+  sh 'rails server'
+end
+
+# Define a task for running the console
+desc 'Open the Rails console'
+task :console do
+  sh 'rails console'
+end

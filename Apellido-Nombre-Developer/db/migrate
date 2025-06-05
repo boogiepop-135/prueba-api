@@ -1,0 +1,51 @@
+# Migraciones para la base de datos
+
+class CreateUsers < ActiveRecord::Migration
+  def change
+    create_table :users do |t|
+      t.string :username, null: false
+      t.string :email, null: false
+      t.string :password_digest, null: false
+
+      t.timestamps
+    end
+  end
+end
+
+class CreateProducts < ActiveRecord::Migration
+  def change
+    create_table :products do |t|
+      t.string :name, null: false
+      t.text :description
+      t.decimal :price, precision: 10, scale: 2, null: false
+      t.integer :stock, default: 0
+
+      t.timestamps
+    end
+  end
+end
+
+class CreateOrders < ActiveRecord::Migration
+  def change
+    create_table :orders do |t|
+      t.references :user, foreign_key: true
+      t.decimal :total_price, precision: 10, scale: 2, null: false
+      t.string :status, default: 'pending'
+
+      t.timestamps
+    end
+  end
+end
+
+class CreateOrderItems < ActiveRecord::Migration
+  def change
+    create_table :order_items do |t|
+      t.references :order, foreign_key: true
+      t.references :product, foreign_key: true
+      t.integer :quantity, null: false
+      t.decimal :price, precision: 10, scale: 2, null: false
+
+      t.timestamps
+    end
+  end
+end
